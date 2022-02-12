@@ -37,7 +37,8 @@ client.connect(err => {
       })
   })
 
-  // POST Students Distribution Data
+  // POST Khabar khaowa student data
+
   app.post('/addDistribution', (req, res) => {
     const distribution = req.body;
     distributionsCollection.insertOne(distribution)
@@ -77,6 +78,17 @@ client.connect(err => {
         res.send(documents);
       })
   })
+
+  // Read Khabar Khaowa Student by today date
+
+  app.get('/khaowaStudent', (req, res) => {
+    const date = new Date().toLocaleString().substring(0, 9);
+    distributionsCollection.find({}).filter({ date: date })
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  })
+
 
   // Load Single Student Data by id
   app.get('/student/:id', (req, res) => {
