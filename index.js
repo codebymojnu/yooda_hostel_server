@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { ObjectId } = require('mongodb');
@@ -82,8 +83,22 @@ client.connect(err => {
   // Read Khabar Khaowa Student by today date
 
   app.get('/khaowaStudent', (req, res) => {
-    const date = new Date().toLocaleString().substring(0, 9);
-    distributionsCollection.find({}).filter({ date: date })
+    const date = new Date().toLocaleDateString();
+    const date1stPart = date.substring(0,1);
+    const date2ndPart = date.substring(2, 4);
+    const date3rdPart = date.substring(5, 9);
+    const finalDate = date1stPart + "-" + date2ndPart + "-" + date3rdPart;
+    distributionsCollection.find({}).filter({ date: finalDate })
+      .toArray((err, documents) => {
+        res.send(documents);
+      })
+  })
+
+
+  // Read a single khabar khaowa Student
+
+  app.get('/khaowaPolapan/:roll/:shift/:finalDate', (req, res) => {
+    distributionsCollection.find({}).filter({studentId: req.params.roll, shift: req.params.shift, date: req.params.finalDate})
       .toArray((err, documents) => {
         res.send(documents);
       })
