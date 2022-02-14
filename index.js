@@ -124,8 +124,6 @@ client.connect(err => {
   })
 
 
-  // Edit Food Items
-
   // first load single data on UI
   app.get('/item/:id', (req, res) => {
     foodsCollection.find({_id: ObjectId(req.params.id)})
